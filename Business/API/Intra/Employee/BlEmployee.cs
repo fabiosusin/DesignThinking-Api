@@ -25,7 +25,7 @@ namespace Business.API.Intra.Employee
                 return baseValidation;
 
             var result = string.IsNullOrEmpty(input.Id) ? IntraEmployeeDAO.Insert(input) : IntraEmployeeDAO.Update(input);
-            return result == null ? new("Não foi possível cadastrar o novo funcionário!") : new(true);
+            return result == null ? new("Não foi possível cadastrar o novo Jogador!") : new(true);
         }
 
         public IntraEmployee GetEmployee(string cpfCnpj) => string.IsNullOrEmpty(cpfCnpj) ? null : IntraEmployeeDAO.FindOne(x => x.CpfCnpj == cpfCnpj);
@@ -37,7 +37,7 @@ namespace Business.API.Intra.Employee
 
             var employee = IntraEmployeeDAO.FindById(id);
             if (employee == null)
-                return new("Funcionário não encontrado!");
+                return new("Jogador não encontrado!");
 
             IntraEmployeeDAO.Remove(employee);
             return new(true);
@@ -47,7 +47,7 @@ namespace Business.API.Intra.Employee
         {
             var result = IntraEmployeeDAO.List(input);
             if (!(result?.Any() ?? false))
-                return new("Nenhum Funcionário encontrado!");
+                return new("Nenhum Jogador encontrado!");
 
             return new(result);
         }
@@ -61,13 +61,13 @@ namespace Business.API.Intra.Employee
                 return new("Informe o Nome!");
 
             if (string.IsNullOrEmpty(input.CpfCnpj))
-                return new("Informe o Cpf/Cnpj!");
+                return new("Informe o Cpf!");
 
             if (!input.CpfCnpj.IsCnpjOrCpf())
-                return new("Cpf/Cnpj inválido!");
+                return new("Cpf inválido!");
 
             if (IntraEmployeeDAO.FindOne(x => x.CpfCnpj == input.CpfCnpj && x.Id != input.Id) != null)
-                return new("Já existe um funcionário cadastrado com este CPF/CNPJ");
+                return new("Já existe um Jogador cadastrado com este CPF");
 
             return new(true);
         }

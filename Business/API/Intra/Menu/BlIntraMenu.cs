@@ -17,18 +17,10 @@ namespace Business.API.Intra.Menu
             var registers = new IntraMenuOutput("Cadastros", new("fas fa-edit", IntraIconTypeEnum.FontAwesome), new List<IntraMenuOutput>
             {
                 new("Usuários", new("fas fa-user-cog", IntraIconTypeEnum.FontAwesome), "users"),
-                new("Funcionários", new("fas fa-users", IntraIconTypeEnum.FontAwesome), "employee"),
-                new ("Equipamentos", new("fas fa-tools", IntraIconTypeEnum.FontAwesome), "equipments")
+                new("Jogadores", new("fas fa-users", IntraIconTypeEnum.FontAwesome), "employee")
             });
 
-            menus.Add(new("Dashboard", new("dashboard", IntraIconTypeEnum.Material), "home"));;
-
-            var loans = new IntraMenuOutput("Ações", new("account_tree", IntraIconTypeEnum.Material), new List<IntraMenuOutput>
-            {
-                new("Empréstimos", new("fa-solid fa-handshake-simple", IntraIconTypeEnum.FontAwesome), "loans"),
-            });
- 
-            menus.Add(loans);
+            menus.Add(new("Dashboard", new("dashboard", IntraIconTypeEnum.Material), "home"));
             menus.Add(registers);
 
             return menus;

@@ -1,5 +1,4 @@
 ﻿using DAO.DBConnection;
-using DAO.Intra.Loan;
 using DAO.Intra.UserDAO;
 using DTO.General.Base.Api.Output;
 using DTO.General.Email.Input;
@@ -17,13 +16,10 @@ namespace Business.API.Hub.Account
     public class BlIntraAuth
     {
         private readonly IntraUserDAO UserDAO;
-        private readonly IntraLoanDAO IntraLoanDAO;
-
-
+        
         public BlIntraAuth(XDataDatabaseSettings settings)
         {
             UserDAO = new(settings);
-            IntraLoanDAO = new(settings);
         }
 
         public IntraLoginOutput FindAccount(LoginInput input)
@@ -137,9 +133,6 @@ namespace Business.API.Hub.Account
             var user = UserDAO.FindById(id);
             if (user == null)
                 return new("Usuário não encontrado!");
-
-            if (IntraLoanDAO.FindOne(x => x.UserId == id) != null)
-                return new("Usuário já vinculado a um empréstimo");
 
             UserDAO.Remove(user);
             return new(true);

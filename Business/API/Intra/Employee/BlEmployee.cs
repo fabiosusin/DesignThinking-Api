@@ -1,6 +1,5 @@
 ﻿using DAO.DBConnection;
 using DAO.Intra.Employee;
-using DAO.Intra.Loan;
 using DTO.General.Base.Api.Output;
 using DTO.Intra.Employee.Database;
 using DTO.Intra.Employee.Input;
@@ -12,12 +11,10 @@ namespace Business.API.Intra.Employee
 {
     public class BlEmployee
     {
-        private readonly IntraLoanDAO IntraLoanDAO;
         private readonly IntraEmployeeDAO IntraEmployeeDAO;
 
         public BlEmployee(XDataDatabaseSettings settings)
         {
-            IntraLoanDAO = new(settings);
             IntraEmployeeDAO = new(settings);
         }
 
@@ -41,9 +38,6 @@ namespace Business.API.Intra.Employee
             var employee = IntraEmployeeDAO.FindById(id);
             if (employee == null)
                 return new("Funcionário não encontrado!");
-
-            if (IntraLoanDAO.FindOne(x => x.EmployeeId == id) != null)
-                return new("O funcionário possui um empréstimo vinculado!");
 
             IntraEmployeeDAO.Remove(employee);
             return new(true);

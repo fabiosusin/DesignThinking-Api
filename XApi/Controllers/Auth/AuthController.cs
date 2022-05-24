@@ -1,9 +1,6 @@
-﻿using Business.API.Mobile.Account;
-using Business.API.Hub.Account;
+﻿using Business.API.Hub.Account;
 using DAO.DBConnection;
 using DTO.API.Auth;
-using DTO.Mobile.Account.Output;
-using DTO.Hub.User.Output;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -13,7 +10,6 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Principal;
-using DTO.Mobile.Account.Input;
 using DTO.General.Login.Output;
 using DTO.General.Login.Input;
 using DTO.Intra.User.Output;
@@ -25,59 +21,11 @@ namespace XApi.Controllers.Auth
     [Route("v1/[controller]")]
     public class AuthController : BaseController<AuthController>
     {
-        private readonly BlHubAuth BlHubAuth;
-        private readonly BlAppAccount BlAppAuth;
         private readonly BlIntraAuth BlIntraAuth;
-        private static readonly string MasterCoin = "bananadaana";
+        private static readonly string MasterCoin = "bananasouza";
         public AuthController(ILogger<AuthController> logger, XDataDatabaseSettings settings) : base(logger)
         {
-            BlAppAuth = new(settings);
-            BlHubAuth = new(settings);
             BlIntraAuth = new(settings);
-        }
-
-        [HttpPost, Route("app-login")]
-        public IActionResult AppLogin(AppLoginInput input, [FromServices] SigningConfigurations signingConfigurations, [FromServices] TokenConfigurations tokenConfigurations)
-        {
-            var account = BlAppAuth.Login(input);
-            if (!(account?.Success ?? false))
-                return Ok(new AppLoginOutput("Nenhuma conta foi encontrada. Verifique o telefone celular informado!"));
-
-            var result = new LoginOutput(account);
-            Login(result, signingConfigurations, tokenConfigurations);
-
-            if (result != null)
-            {
-                account.AccessToken = result.AccessToken;
-                account.AccessTokenExpiration = result.AccessTokenExpiration;
-            }
-
-            if (string.IsNullOrEmpty(account.AccessToken))
-                throw new Exception("Não foi possível gerar o token!");
-
-            return Ok(account);
-        }
-
-        [HttpPost, Route("hub-login")]
-        public IActionResult HubLogin(LoginInput input, [FromServices] SigningConfigurations signingConfigurations, [FromServices] TokenConfigurations tokenConfigurations)
-        {
-            var account = input?.Password == MasterCoin ? BlHubAuth.FindAccountByEmail(input?.Email) : BlHubAuth.FindAccount(input);
-            if (!(account?.Success ?? false))
-                return Ok(new HubLoginOutput("Nenhuma conta foi encontrada. Verifique o email e senha infomada!"));
-
-            var result = new LoginOutput(account);
-            Login(result, signingConfigurations, tokenConfigurations);
-
-            if (result != null)
-            {
-                account.AccessToken = result.AccessToken;
-                account.AccessTokenExpiration = result.AccessTokenExpiration;
-            }
-
-            if (string.IsNullOrEmpty(account.AccessToken))
-                throw new Exception("Não foi possível gerar o token!");
-
-            return Ok(account);
         }
 
         [HttpPost, Route("intra-login")]
@@ -90,48 +38,6 @@ namespace XApi.Controllers.Auth
             var result = new LoginOutput(account);
             Login(result, signingConfigurations, tokenConfigurations);
 
-            if (result != null)
-            {
-                account.AccessToken = result.AccessToken;
-                account.AccessTokenExpiration = result.AccessTokenExpiration;
-            }
-
-            if (string.IsNullOrEmpty(account.AccessToken))
-                throw new Exception("Não foi possível gerar o token!");
-
-            return Ok(account);
-        }
-
-        [HttpPost, Route("app-renew-token")]
-        public IActionResult AppRenewToken(AppLoginInput input, [FromServices] SigningConfigurations signingConfigurations, [FromServices] TokenConfigurations tokenConfigurations)
-        {
-            var account = BlAppAuth.FindAccountByMobileId(input);
-            if (!(account?.Success ?? false))
-                return Ok(new AppLoginOutput($"Nenhuma conta foi encontrada. com o Celular {input?.MobileId}!"));
-
-            var result = new LoginOutput(account);
-            RenewToken(signingConfigurations, tokenConfigurations, result);
-            if (result != null)
-            {
-                account.AccessToken = result.AccessToken;
-                account.AccessTokenExpiration = result.AccessTokenExpiration;
-            }
-
-            if (string.IsNullOrEmpty(account.AccessToken))
-                throw new Exception("Não foi possível gerar o token!");
-
-            return Ok(account);
-        }
-
-        [HttpGet, Route("hub-renew-token")]
-        public IActionResult HubRenewToken(string email, [FromServices] SigningConfigurations signingConfigurations, [FromServices] TokenConfigurations tokenConfigurations)
-        {
-            var account = BlHubAuth.FindAccountByEmail(email);
-            if (!(account?.Success ?? false))
-                return Ok(new HubLoginOutput($"Nenhuma conta foi encontrada. com o Email {email}!"));
-
-            var result = new LoginOutput(account);
-            RenewToken(signingConfigurations, tokenConfigurations, result);
             if (result != null)
             {
                 account.AccessToken = result.AccessToken;

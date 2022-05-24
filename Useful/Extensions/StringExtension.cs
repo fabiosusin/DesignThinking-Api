@@ -1,5 +1,4 @@
-﻿using DTO.Hub.Cellphone.Database;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -198,22 +197,6 @@ namespace Useful.Extensions
         }
 
         public static string ToMoney(this decimal number) => string.Format("{0:c" + 2 + "}", number);
-
-        public static string CellphoneMask(this SurfCellphoneData input)
-        {
-            if (string.IsNullOrEmpty(input?.Number))
-                return null;
-
-            var number = input.Number;
-            if (!string.IsNullOrEmpty(input.CountryPrefix))
-                number = input.CountryPrefix + input.Number;
-
-            var mask = "{0:00000-0000}";
-            if (number.Length == 11)
-                mask = "{0:(00)00000-0000}";
-
-            return string.Format(mask, Convert.ToInt64(number));
-        }
 
         public static string CompleteWithZerosLeft(string value, int length)
         {

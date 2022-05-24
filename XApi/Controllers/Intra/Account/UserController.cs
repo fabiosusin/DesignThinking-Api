@@ -17,7 +17,7 @@ namespace XApi.Controllers.Intra.Account
         public UserController(ILogger<UserController> logger, XDataDatabaseSettings settings) : base(logger) => Bl = new(settings);
         protected BlIntraAuth Bl;
 
-        [HttpPost, Route("upsert-user"), AllowAnonymous]
+        [HttpPost, Route("upsert-user")]
         public IActionResult UpsertAccount(IntraAddUserInput input) => Ok(Bl.UpsertUser(input));
 
         [HttpGet, Route("get-user-by-email")]

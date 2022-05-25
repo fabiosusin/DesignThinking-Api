@@ -10,7 +10,7 @@ namespace Services.Mobile.Email
     public class EmailService : IEmailService
     {
 
-        private static readonly EmailSettingsInput _mailSettings = new("tecnologia@xplay.digital", "noreplyXplay.digital", "Xtech2021!", "plsk-lnx-10.visao.psi.br", 587);
+        private static readonly EmailSettingsInput _mailSettings = new("noreplyfabiosusin@gmail.com", "noreplyfabiosusin", "fabio210800", "smtp.gmail.com", 587);
 
         public Task<bool> SendEmail(EmailRequestInput input)
         {

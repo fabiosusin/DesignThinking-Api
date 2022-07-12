@@ -62,15 +62,9 @@ namespace DAO.Intra.Employee
 
         public long EmployeesCount() => Repository.Collection.Count();
 
-        public IEnumerable<IntraEmployee> List(FieldsBuilder<IntraEmployee> fields) => Repository.Collection.FindAll().SetFields(fields);
-
         public IEnumerable<IntraEmployee> List(IntraEmployeeListInput input) => input == null ?
            FindAll() : input.Paginator == null ?
            Repository.Collection.Find(GenerateFilters(input.Filters)) : Repository.Collection.Find(GenerateFilters(input.Filters)).SetSkip((input.Paginator.Page > 0 ? input.Paginator.Page - 1 : 0) * input.Paginator.ResultsPerPage).SetLimit(input.Paginator.ResultsPerPage);
-
-        public IEnumerable<IntraEmployee> List(IntraEmployeeListInput input, FieldsBuilder<IntraEmployee> fields) => input == null ?
-            Repository.Collection.FindAll().SetFields(fields) : input.Paginator == null ?
-            Repository.Collection.Find(GenerateFilters(input.Filters)).SetFields(fields) : Repository.Collection.Find(GenerateFilters(input.Filters)).SetSkip((input.Paginator.Page > 0 ? input.Paginator.Page - 1 : 0) * input.Paginator.ResultsPerPage).SetLimit(input.Paginator.ResultsPerPage).SetFields(fields);
 
         private static IMongoQuery GenerateFilters(IntraEmployeeFiltersInput input)
         {

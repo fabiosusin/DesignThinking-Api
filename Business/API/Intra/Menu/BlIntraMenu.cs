@@ -21,8 +21,9 @@ namespace Business.API.Intra.Menu
             });
 
             menus.Add(new("Dashboard", new("dashboard", IntraIconTypeEnum.Material), "home"));
-            menus.Add(new("Novo Jogo", new("fas fa - shuttlecock", IntraIconTypeEnum.FontAwesome), "game"));
+            menus.Add(new("Jogos", new("fas fa-people-arrows", IntraIconTypeEnum.FontAwesome), "games"));
             menus.Add(registers);
+            menus.Add(new("Relatório", new("fas fa-file-invoice", IntraIconTypeEnum.FontAwesome), "games/report"));
 
             return menus;
         }

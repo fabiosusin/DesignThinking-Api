@@ -14,7 +14,24 @@ namespace DTO.Intra.Game.Database
     public class IntraGameSet
     {
         public int SetNumber { get; set; }
-        public int PlayerOnePoints { get; set; }
-        public int PlayerTwoPoints { get; set; }
+        public IntraPlayerGame PlayerOne { get; set; }
+       public IntraPlayerGame PlayerTwo { get; set; }
+    }
+
+    public class IntraPlayerGame
+    {
+        public int Points { get; set; }
+        public IntraGameSetShotChart ShotChart { get; set; }
+    }
+
+    public class IntraGameSetShotChart
+    {
+        public int First { get; set; }
+        public int Second { get; set; }
+        public int Third { get; set; }
+        public int Fourth { get; set; }
+        public int Fifth { get; set; }
+        public int Sixth { get; set; }
+        public int Errors { get; set; }
     }
 }
